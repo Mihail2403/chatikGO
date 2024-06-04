@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"auth/docs"
 	"auth/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +21,6 @@ func NewHandler(service *service.Service) *Handler {
 // Register gin router
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-	docs.SwaggerInfo.BasePath = "/auth"
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.SignUp)

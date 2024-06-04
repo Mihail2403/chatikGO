@@ -8,24 +8,24 @@ import (
 // Entity
 type User struct {
 	Id           int    `db:"id" json:"id"`
-	Username     string `db:"username" json:"username"`
+	Email        string `db:"email" json:"email"`
 	PasswordHash string `db:"password_hash" json:"-"`
 }
 
 type UserFromJSON struct {
 	Id       int    `json:"-"`
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 func (u *UserFromJSON) ToEntity() (*User, error) {
-	if u.Username == "" || u.Password == "" {
+	if u.Email == "" || u.Password == "" {
 		return nil, errors.New("username or password  is empty")
 	}
 	password_hash := hash.GeneratePasswordHash(u.Password)
 	return &User{
 		Id:           u.Id,
-		Username:     u.Username,
+		Email:        u.Email,
 		PasswordHash: password_hash,
 	}, nil
 }

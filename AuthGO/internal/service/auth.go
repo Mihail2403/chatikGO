@@ -26,7 +26,7 @@ func (s *AuthService) SignUp(usr *entity.User) error {
 
 // Login an existing user and generate JWT
 func (s *AuthService) GetToken(usr *entity.User) (string, error) {
-	u, err := s.repo.GetUserByUnameAndPasswordHash(usr.Username, usr.PasswordHash)
+	u, err := s.repo.GetUserByUnameAndPasswordHash(usr.Email, usr.PasswordHash)
 	if err != nil {
 		return "", fmt.Errorf("failed to get user: %v", err)
 	}

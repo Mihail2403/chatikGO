@@ -10,7 +10,7 @@ import (
 type Auth interface {
 	SignUp(usr *entity.User) error
 	GetUserById(id int) (entity.User, error)
-	GetUserByUnameAndPasswordHash(username, password_hash string) (entity.User, error)
+	GetUserByUnameAndPasswordHash(email, password_hash string) (entity.User, error)
 }
 
 // struct  for implementing the Repository interfaces

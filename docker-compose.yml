@@ -21,6 +21,18 @@ services:
     command: sh -c "./main"
     depends_on:
       - auth
+  users-service:
+    container_name: gochat_users
+    build: ./users-service
+    ports:
+      - 8002:8002
+    env_file:
+      - ./users-service/.env
+    command: sh -c "
+      ./migrate -path ./schema -database  postgres://postgres:postgres@db_users:5432/users?sslmode=disable up
+      && ./main"
+    depends_on:
+      - auth
 
   db_auth:
     container_name: gochat_auth_db
@@ -34,5 +46,17 @@ services:
     volumes:
       - auth_db:/var/lib/postgresql/data
 
+  db_users:
+    container_name: gochat_auth_db
+    image: postgres:16.2
+    environment:
+      - POSTGRES_DB=users
+      - POSTGRES_NAME=postgres
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5432
+    volumes:
+      - users_db:/var/lib/postgresql/data
 volumes:
   auth_db:
+  users_db:

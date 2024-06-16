@@ -1,0 +1,37 @@
+services:
+  users-service:
+    container_name: gochat_users
+    build: ./
+    ports:
+      - 8002:8002
+    env_file:
+      - .env
+    command: sh -c "
+      ./migrate -path ./schema -database  postgres://postgres:postgres@db_users:5432/users?sslmode=disable up
+      && ./main"
+    depends_on:
+      - db_users
+
+  db_users:
+    container_name: gochat_users_db
+    image: postgres:16.2
+    environment:
+      - POSTGRES_DB=users
+      - POSTGRES_NAME=postgres
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5432
+    volumes:
+      - users_db:/var/lib/postgresql/data
+
+  mongo_users:
+    container_name: gochat_users_mongo_db
+    image: mongo:8.0-rc
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_users_data:/data/db
+
+volumes:
+  users_db:
+  mongo_users_data:
